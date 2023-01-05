@@ -55,42 +55,30 @@ export default function App() {
         <ActivityIndicator size="large" color="#ffa100" />
       ) : (
         <>
-          <Button
-            onPress={async () => {
-              const myFile = await DocumentPicker.pickSingle({
-                presentationStyle: 'pageSheet',
-                type: DocumentPicker.types.audio,
-                copyTo: 'cachesDirectory',
-              });
-              if (!!myFile.fileCopyUri && !!myFile.name) {
-                setFile({
-                  fileName: myFile.name,
-                  filePath: myFile.fileCopyUri,
-                });
-              }
-            }}
-            title="Select an audio file"
-            containerStyle={styles.audioPickerButton}
-          />
           {!!file && (
             <>
+              <Text style={styles.fileNameText}>{file.fileName}</Text>
               <Text style={styles.playbackText}>
                 {formatDuration(playbackTime ?? 0)}/
                 {formatDuration(fileDuration ?? 0)}
               </Text>
               <Text style={styles.playRateText}>
-                Play Rate: {playRate.toPrecision(3)}
+                Play Rate: {playRate.toFixed(2)}x
               </Text>
-              <Slider
-                style={styles.slider}
-                minimumValue={0.25}
-                maximumValue={4}
-                minimumTrackTintColor="#55f"
-                maximumTrackTintColor="#999"
-                value={playRate}
-                step={0.05}
-                onValueChange={setPlayRate}
-              />
+              <View style={styles.sliderRow}>
+                <Text style={styles.minimumText}>0.25x</Text>
+                <Slider
+                  style={styles.slider}
+                  minimumValue={0.25}
+                  maximumValue={4}
+                  minimumTrackTintColor="#55f"
+                  maximumTrackTintColor="#999"
+                  value={playRate}
+                  step={0.05}
+                  onValueChange={setPlayRate}
+                />
+                <Text style={styles.maximumText}>4x</Text>
+              </View>
               <Button
                 onPress={async () => {
                   setIsProcessing(true);
@@ -153,6 +141,23 @@ export default function App() {
               </>
             </>
           )}
+          <Button
+            onPress={async () => {
+              const myFile = await DocumentPicker.pickSingle({
+                presentationStyle: 'pageSheet',
+                type: DocumentPicker.types.audio,
+                copyTo: 'cachesDirectory',
+              });
+              if (!!myFile.fileCopyUri && !!myFile.name) {
+                setFile({
+                  fileName: myFile.name,
+                  filePath: myFile.fileCopyUri,
+                });
+              }
+            }}
+            title="Select an audio file"
+            containerStyle={styles.audioPickerButton}
+          />
         </>
       )}
     </View>

@@ -10,7 +10,7 @@ export default StyleSheet.create({
     marginBottom: 16,
   },
   playRateText: {
-    marginBottom: 16,
+    marginBottom: 12,
     borderRadius: 24,
     borderWidth: 1.5,
     borderColor: '#999',
@@ -18,8 +18,7 @@ export default StyleSheet.create({
     paddingVertical: 12,
   },
   slider: {
-    width: '80%',
-    marginBottom: 16,
+    width: '75%',
   },
   processButton: {
     marginBottom: 16,
@@ -45,6 +44,30 @@ export default StyleSheet.create({
     textDecorationLine: 'underline',
     color: '#262',
     fontSize: 18,
+    marginBottom: 16,
+  },
+  fileNameText: {
+    color: '#333',
+    fontSize: 15,
+    width: '80%',
+    marginBottom: 16,
+    textAlign: 'center',
+  },
+  minimumText: {
+    fontSize: 14,
+    color: '#333',
+    marginRight: 4,
+  },
+  maximumText: {
+    fontSize: 14,
+    color: '#333',
+    marginLeft: 4,
+  },
+  sliderRow: {
+    flexDirection: 'row',
+    width: '90%',
+    alignItems: 'center',
+    justifyContent: 'center',
     marginBottom: 16,
   },
 });

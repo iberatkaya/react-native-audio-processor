@@ -2,15 +2,11 @@ import * as React from 'react';
 import { useEffect, useState } from 'react';
 import Slider from '@react-native-community/slider';
 
-import {
-  StyleSheet,
-  View,
-  Text,
-  Button,
-  ActivityIndicator,
-} from 'react-native';
+import { View, Text, ActivityIndicator } from 'react-native';
 import AudioProcessor from 'react-native-audio-processor';
 import DocumentPicker from 'react-native-document-picker';
+import Button from './components/Button';
+import styles from './styles';
 
 export default function App() {
   const [file, setFile] = useState<null | {
@@ -56,7 +52,7 @@ export default function App() {
   return (
     <View style={styles.container}>
       {isProcessing ? (
-        <ActivityIndicator size="large" />
+        <ActivityIndicator size="large" color="#ffa100" />
       ) : (
         <>
           <Button
@@ -74,12 +70,19 @@ export default function App() {
               }
             }}
             title="Select an audio file"
+            containerStyle={styles.audioPickerButton}
           />
           {!!file && (
             <>
-              <Text>Play Rate: {playRate.toPrecision(3)}</Text>
+              <Text style={styles.playbackText}>
+                {formatDuration(playbackTime ?? 0)}/
+                {formatDuration(fileDuration ?? 0)}
+              </Text>
+              <Text style={styles.playRateText}>
+                Play Rate: {playRate.toPrecision(3)}
+              </Text>
               <Slider
-                style={{ width: '80%' }}
+                style={styles.slider}
                 minimumValue={0.25}
                 maximumValue={4}
                 minimumTrackTintColor="#55f"
@@ -101,6 +104,7 @@ export default function App() {
                   setProcessedFile(outputFilePath);
                   setIsProcessing(false);
                 }}
+                containerStyle={styles.processButton}
                 title="Process source file"
               />
               <>
@@ -112,6 +116,7 @@ export default function App() {
                           await AudioProcessor.play();
                           getFileDuration();
                         }}
+                        containerStyle={styles.continueButton}
                         title="Continue playing"
                       />
                     )}
@@ -121,6 +126,7 @@ export default function App() {
                         getFileDuration();
                         if (!playedPlayerOnce) setPlayedPlayerOnce(true);
                       }}
+                      containerStyle={styles.playSourceButton}
                       title="Play source file"
                     />
                     {!!processedFile && (
@@ -130,6 +136,7 @@ export default function App() {
                           getFileDuration();
                           if (!playedPlayerOnce) setPlayedPlayerOnce(true);
                         }}
+                        containerStyle={styles.playProcessedButton}
                         title="Play processed file"
                       />
                     )}
@@ -138,14 +145,11 @@ export default function App() {
                   <>
                     <Button
                       onPress={() => AudioProcessor.pausePlayer()}
+                      containerStyle={styles.pauseButton}
                       title="Pause playing"
                     />
                   </>
                 )}
-                <Text>
-                  {formatDuration(playbackTime ?? 0)}/
-                  {formatDuration(fileDuration ?? 0)}
-                </Text>
               </>
             </>
           )}
@@ -154,16 +158,3 @@ export default function App() {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  box: {
-    width: 60,
-    height: 60,
-    marginVertical: 20,
-  },
-});

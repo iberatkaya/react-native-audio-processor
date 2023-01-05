@@ -1,21 +1,17 @@
 # react-native-audio-processor
 
-React Native package for audio processing
-
-## Installation
-
-```sh
-npm install react-native-audio-processor
-```
+React Native package for applying audio processing to audio files. It uses [AVAudioEngine](https://developer.apple.com/documentation/avfaudio/audio_engine) to apply audio effects. Currently WIP and iOS only.
 
 ## Usage
 
-```js
-import { multiply } from 'react-native-audio-processor';
+```ts
+import AudioProcessor from 'react-native-audio-processor';
 
-// ...
+const outputFilePath = await AudioProcessor.processFile(myFile, 'output.m4a' {
+    playRate: 1.25,
+});
 
-const result = await multiply(3, 7);
+await AudioProcessor.playFile(outputFilePath);
 ```
 
 ## Contributing
@@ -25,7 +21,3 @@ See the [contributing guide](CONTRIBUTING.md) to learn how to contribute to the 
 ## License
 
 MIT
-
----
-
-Made with [create-react-native-library](https://github.com/callstack/react-native-builder-bob)

@@ -9,7 +9,7 @@ struct ProcessingSettings {
     init(reverb: Int?, delay: Int?, delayTimeInMS: Int?, delayFeedback: Int?, delayLowPassCutoff: Int?, distortionAmount: Int?, distortionGain: Int?, pitchAmount: Int?, pitchOverlap: Float?, pitchRate: Float?, playRate: Float?) {
         self.reverb = reverb ?? 0
         self.delay = delay ?? 0
-        self.delayTimeInMS = delayTimeInMS ?? 0
+        self.delayTimeInMS = delayTimeInMS ?? 1000
         self.delayFeedback = delayFeedback ?? 50
         self.delayLowPassCutoff = delayLowPassCutoff ?? 15000
         self.distortionGain = distortionGain ?? -6
@@ -45,7 +45,7 @@ struct ProcessingSettings {
     /// The amount of the output signal that feeds back into the delay line. You specify the feedback as a percentage. The default value is 50%. The valid range of values is -100% to 100%.
     let delayFeedback: Int
     
-    /// You specify the delay in seconds. The default value is 1. The valid range of values is 0 to 2 seconds.
+    /// You specify the delay in seconds. The default value is 1000. The valid range of values is 0 to 2 seconds.
     let delayTimeInMS: Int
     
     /// The cutoff frequency above which high frequency content rolls off, in hertz.

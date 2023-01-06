@@ -11,7 +11,7 @@ export interface ProcessFileOptions {
    */
   delay?: number;
   /**
-   * You specify the delay in seconds. The default value is 1. The valid range of values is 0 to 2 seconds.
+   * You specify the delay in seconds. The default value is 1000. The valid range of values is 0 to 2000 ms.
    */
   delayTimeInMS?: number;
   /**

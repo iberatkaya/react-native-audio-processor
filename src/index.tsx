@@ -1,4 +1,5 @@
-import { NativeModules, Platform } from 'react-native';
+import { useEffect, useState } from 'react';
+import { NativeEventEmitter, NativeModules, Platform } from 'react-native';
 import type { ProcessFileOptions } from './types';
 
 const LINKING_ERROR =
@@ -18,38 +19,92 @@ const AudioProcessor = NativeModules.AudioProcessor
       }
     );
 
+const eventEmitter = new NativeEventEmitter(AudioProcessor);
+
+/**
+ * Checks if the song is currently playing.
+ * The value is initially `null` until the hook can
+ * determine if the player is playing.
+ */
+export function useSongIsPlaying(): boolean | null {
+  const [songIsPlaying, setSongIsPlaying] = useState<boolean | null>(null);
+
+  useEffect(() => {
+    const onChange = (val: boolean) => {
+      setSongIsPlaying(val);
+    };
+
+    const subscription = eventEmitter.addListener('SONG_IS_PLAYING', onChange);
+
+    return () => subscription.remove();
+  }, []);
+
+  return songIsPlaying;
+}
+
+/** Listener to check if the song is playing. */
+export function addSongIsPlayingListener(
+  callback: (isPlaying: boolean) => void
+) {
+  return eventEmitter.addListener('SongIsPlaying', callback);
+}
+
+/** Play an audio file at `path`. */
 export function playFile(path: string): Promise<void> {
   return AudioProcessor.playFile(path);
 }
 
+/**
+ * Starts playing with the current player.
+ * For it to play, it must already be initialized with `playFile`.
+ */
 export function play(): Promise<boolean> {
   return AudioProcessor.play();
 }
 
+/** Stop the player. */
 export function stopPlayer(): Promise<boolean> {
   return AudioProcessor.stopPlayer();
 }
 
+/** Get the current playback time of the player. */
 export function getPlaybackTime(): Promise<number | null> {
   return AudioProcessor.getPlaybackTime();
 }
 
+/**
+ * Set the playback time of the audio player.
+ * The `time` must be greater than 0 and less than the total song
+ * duration.
+ */
+export function setPlaybackTime(time: number): Promise<boolean> {
+  return AudioProcessor.setPlaybackTime(time);
+}
+
+/** Checks if the song is playing. */
 export function isPlaying(): Promise<boolean> {
   return AudioProcessor.isPlaying();
 }
 
+/** Gets the song duration. */
 export function getDuration(): Promise<number | null> {
   return AudioProcessor.getDuration();
 }
 
+/** Gets the song file's sample rate. */
 export function getFileSampleRate(path: string): Promise<number> {
   return AudioProcessor.getFileSampleRate(path);
 }
 
+/** Pauses current player. */
 export function pausePlayer(): Promise<boolean> {
   return AudioProcessor.pausePlayer();
 }
 
+/**
+ * Applies audio effects to the file given in `filePath` and craetes a file named `outPutFileName`.
+ * The file is stored in the device cache.
+ */
 export function processFile(
   filePath: string,
   outputFileName: string,
@@ -134,4 +189,7 @@ export default {
   getDuration,
   pausePlayer,
   play,
+  setPlaybackTime,
+  addSongIsPlayingListener,
+  useSongIsPlaying,
 };

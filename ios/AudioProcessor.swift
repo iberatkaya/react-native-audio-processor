@@ -74,8 +74,44 @@ struct ProcessingSettings {
 }
 
 @objc(AudioProcessor)
-class AudioProcessor: NSObject {
+class AudioProcessor: RCTEventEmitter, AVAudioPlayerDelegate {
     var player: AVAudioPlayer?
+    
+    let SONG_IS_PLAYING: String = "SONG_IS_PLAYING";
+    
+    override func supportedEvents() -> [String]! {
+      return [SONG_IS_PLAYING]
+    }
+    
+    var hasListener: Bool = false
+
+    override func startObserving() {
+        hasListener = true
+        self.sendEvent(withName: self.SONG_IS_PLAYING, body: (player?.isPlaying ?? false))
+        
+    }
+
+    override func stopObserving() {
+        self.sendEvent(withName: self.SONG_IS_PLAYING, body: nil)
+        hasListener = false
+    }
+    
+    
+    func dispatchSongIsPlaying() {
+        if (!hasListener) {
+            return
+        }
+        
+        self.sendEvent(withName: self.SONG_IS_PLAYING, body: true)
+    }
+    
+    func dispatchSongStoppedPlaying() {
+        if (!hasListener) {
+            return
+        }
+        
+        self.sendEvent(withName: self.SONG_IS_PLAYING, body: false)
+    }
     
     @objc(playFile: withResolver: withRejecter:)
     func playFile(_ pathStr: String, resolve: RCTPromiseResolveBlock, reject: RCTPromiseRejectBlock) {
@@ -84,24 +120,35 @@ class AudioProcessor: NSObject {
         _ = path.startAccessingSecurityScopedResource()
         do {
             _ = stopPlayerInternal()
-            try AVAudioSession.sharedInstance().setCategory(.playback)
-            player = try AVAudioPlayer(contentsOf: path)
-            player?.prepareToPlay()
-            player?.play()
+            try setupPlayer(path: path)
             resolve(true)
         } catch {
             reject("AudioProcessorError", error.localizedDescription, error)
         }
     }
     
+    func setupPlayer(path: URL) throws {
+        try AVAudioSession.sharedInstance().setCategory(.playback)
+        player = try AVAudioPlayer(contentsOf: path)
+        player?.delegate = self
+        player?.prepareToPlay()
+        player?.play()
+        dispatchSongIsPlaying()
+    }
+    
     func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
-        
+        dispatchSongStoppedPlaying()
+    }
+    
+    func audioPlayerDecodeErrorDidOccur(_ player: AVAudioPlayer, error: Error?) {
+        dispatchSongStoppedPlaying()
     }
     
     @objc(play: withRejecter:)
     func play(resolve: RCTPromiseResolveBlock, reject: RCTPromiseRejectBlock) {
         if let player {
             player.play()
+            dispatchSongIsPlaying()
             resolve(true)
         } else {
             resolve(false)
@@ -110,13 +157,15 @@ class AudioProcessor: NSObject {
     
     @objc(stopPlayer: withRejecter:)
     func stopPlayer(resolve: RCTPromiseResolveBlock, reject: RCTPromiseRejectBlock) {
-        resolve(stopPlayerInternal())
+        let stopped = stopPlayerInternal()
+        resolve(stopped)
     }
     
     @objc(pausePlayer: withRejecter:)
     func pausePlayer(resolve: RCTPromiseResolveBlock, reject: RCTPromiseRejectBlock) {
         if let player {
             player.pause()
+            dispatchSongStoppedPlaying()
             resolve(true)
         } else {
             resolve(false)
@@ -131,6 +180,7 @@ class AudioProcessor: NSObject {
     func stopPlayerInternal() -> Bool {
         if let player, player.isPlaying {
             player.stop()
+            dispatchSongStoppedPlaying()
             return true
         }
         return false
@@ -158,6 +208,23 @@ class AudioProcessor: NSObject {
             resolve(nil)
         }
     }
+
+    @objc(setPlaybackTime: withResolver: withRejecter:)
+    func setPlaybackTime(time: NSNumber, resolve: RCTPromiseResolveBlock, reject: RCTPromiseRejectBlock) {
+        if let player {
+            if Int(player.duration) < Int(time) {
+                reject("AudioProcessorError", "Time \(time) cannot be great than the track duration \(Int(player.duration))", nil)
+            } else if Int(time) < 0 {
+                reject("AudioProcessorError", "Time \(time) cannot be less than 0", nil)
+            } else {
+                player.currentTime = TimeInterval(time)
+                resolve(true)
+            }
+        } else {
+            resolve(false)
+        }
+    }
+
     
     @objc(getDuration: withRejecter:)
     func getDuration(resolve: RCTPromiseResolveBlock, reject: RCTPromiseRejectBlock)  {

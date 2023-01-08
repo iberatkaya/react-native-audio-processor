@@ -25,20 +25,17 @@ export default StyleSheet.create({
     backgroundColor: '#ffa100',
   },
   continueButton: {
-    marginBottom: 16,
     backgroundColor: '#6b6',
+    marginBottom: 16,
   },
+  buttonsContainer: {},
   playSourceButton: {
-    marginBottom: 16,
     backgroundColor: '#6b6',
+    marginBottom: 16,
   },
   playProcessedButton: {
-    marginBottom: 16,
     backgroundColor: '#6b6',
-  },
-  pauseButton: {
     marginBottom: 16,
-    backgroundColor: '#c55',
   },
   playbackText: {
     textDecorationLine: 'underline',
@@ -66,6 +63,23 @@ export default StyleSheet.create({
   sliderRow: {
     flexDirection: 'row',
     width: '90%',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 16,
+  },
+  backIcon: {
+    marginRight: 8,
+    paddingLeft: 4,
+  },
+  forwardIcon: {
+    marginLeft: 8,
+    paddingLeft: 4,
+  },
+  pauseButton: {
+    backgroundColor: '#c55',
+  },
+  playbackContainer: {
+    flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     marginBottom: 16,

@@ -46,7 +46,7 @@ export function useSongIsPlaying(): boolean | null {
 export function addSongIsPlayingListener(
   callback: (isPlaying: boolean) => void
 ) {
-  return eventEmitter.addListener('SongIsPlaying', callback);
+  return eventEmitter.addListener('SONG_IS_PLAYING', callback);
 }
 
 /** Play an audio file at `path`. */

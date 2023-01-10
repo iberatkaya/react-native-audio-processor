@@ -6,6 +6,7 @@ import Slider from '@react-native-community/slider';
 const SliderWithTitle = ({
   value,
   onValueChange,
+  onSlidingComplete,
   maximumValue,
   minimumValue,
   step,
@@ -21,6 +22,7 @@ const SliderWithTitle = ({
   | 'maximumValue'
   | 'step'
   | 'disabled'
+  | 'onSlidingComplete'
 >) => {
   return (
     <View style={styles.container}>
@@ -38,7 +40,8 @@ const SliderWithTitle = ({
           maximumTrackTintColor="#999"
           value={value}
           step={step}
-          onSlidingComplete={onValueChange}
+          onSlidingComplete={onSlidingComplete}
+          onValueChange={onValueChange}
         />
         <Text numberOfLines={2} style={styles.maximumText}>
           {maxLabel}

@@ -134,7 +134,7 @@ export default function App() {
                 minimumValue={0}
                 maximumValue={fileDuration ?? 0}
                 step={1}
-                onValueChange={AudioProcessor.setPlaybackTime}
+                onSlidingComplete={AudioProcessor.setPlaybackTime}
                 value={playbackTime ?? 0}
                 disabled={!isPlaying}
               />

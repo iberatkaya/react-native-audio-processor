@@ -18,8 +18,20 @@ const IconButton = ({
   iconSize?: number;
   containerStyle?: StyleProp<ViewStyle>;
 } & TouchableOpacityProps) => {
+  const containerSize = (iconSize ?? 16) + 24;
   return (
-    <TouchableOpacity {...rest} style={[styles.container, containerStyle]}>
+    <TouchableOpacity
+      {...rest}
+      style={[
+        styles.container,
+        {
+          height: containerSize,
+          width: containerSize,
+          borderRadius: containerSize / 2,
+        },
+        containerStyle,
+      ]}
+    >
       <MaterialIcon size={iconSize ?? 16} style={styles.icon} name={name} />
     </TouchableOpacity>
   );

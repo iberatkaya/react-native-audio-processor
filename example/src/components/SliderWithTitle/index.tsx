@@ -3,7 +3,7 @@ import React from 'react';
 import styles from './styles';
 import Slider from '@react-native-community/slider';
 
-const AudioEffect = ({
+const SliderWithTitle = ({
   value,
   onValueChange,
   maximumValue,
@@ -12,18 +12,25 @@ const AudioEffect = ({
   minLabel,
   maxLabel,
   title,
-}: { minLabel: string; maxLabel: string; title: string } & Pick<
+  disabled,
+}: { minLabel: string; maxLabel: string; title?: string } & Pick<
   Slider['props'],
-  'value' | 'onValueChange' | 'minimumValue' | 'maximumValue' | 'step'
+  | 'value'
+  | 'onValueChange'
+  | 'minimumValue'
+  | 'maximumValue'
+  | 'step'
+  | 'disabled'
 >) => {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>{title}</Text>
+      {!!title && <Text style={styles.title}>{title}</Text>}
       <View style={styles.sliderRow}>
         <Text numberOfLines={2} style={styles.minimumText}>
           {minLabel}
         </Text>
         <Slider
+          disabled={disabled}
           style={styles.slider}
           minimumValue={minimumValue}
           maximumValue={maximumValue}
@@ -31,7 +38,7 @@ const AudioEffect = ({
           maximumTrackTintColor="#999"
           value={value}
           step={step}
-          onValueChange={onValueChange}
+          onSlidingComplete={onValueChange}
         />
         <Text numberOfLines={2} style={styles.maximumText}>
           {maxLabel}
@@ -41,4 +48,4 @@ const AudioEffect = ({
   );
 };
 
-export default AudioEffect;
+export default SliderWithTitle;

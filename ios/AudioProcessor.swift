@@ -212,19 +212,18 @@ class AudioProcessor: RCTEventEmitter, AVAudioPlayerDelegate {
     @objc(setPlaybackTime: withResolver: withRejecter:)
     func setPlaybackTime(time: NSNumber, resolve: RCTPromiseResolveBlock, reject: RCTPromiseRejectBlock) {
         if let player {
-            if Int(player.duration) < Int(time) {
+            if Int(player.duration) < Int(truncating: time) {
                 reject("AudioProcessorError", "Time \(time) cannot be great than the track duration \(Int(player.duration))", nil)
-            } else if Int(time) < 0 {
+            } else if Int(truncating: time) < 0 {
                 reject("AudioProcessorError", "Time \(time) cannot be less than 0", nil)
             } else {
-                player.currentTime = TimeInterval(time)
+                player.currentTime = TimeInterval(truncating: time)
                 resolve(true)
             }
         } else {
             resolve(false)
         }
     }
-
     
     @objc(getDuration: withRejecter:)
     func getDuration(resolve: RCTPromiseResolveBlock, reject: RCTPromiseRejectBlock)  {

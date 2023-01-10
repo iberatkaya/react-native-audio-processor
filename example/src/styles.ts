@@ -1,21 +1,18 @@
 import { StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
-  safeArea: {
-    flex: 1,
-  },
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
   pageView: {
     width: '100%',
-    height: '40%',
+    height: 260,
     marginBottom: 16,
+  },
+  pickerContainer: {
+    height: '100%',
+    justifyContent: 'center',
   },
   audioPickerButton: {
     marginBottom: 16,
+    alignSelf: 'center',
   },
   playRateText: {
     marginBottom: 12,
@@ -52,6 +49,7 @@ export default StyleSheet.create({
     marginBottom: 16,
   },
   fileNameText: {
+    marginTop: 40,
     color: '#333',
     fontSize: 15,
     width: '80%',
@@ -97,17 +95,18 @@ export default StyleSheet.create({
     marginBottom: 16,
   },
   settingContainer: {
-    height: '100%',
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#f4f4f4',
     borderRadius: 24,
+    marginHorizontal: 16,
     borderWidth: 1,
     borderColor: '#777',
   },
   settingScrollView: {
-    paddingHorizontal: 16,
-    justifyContent: 'center',
     paddingVertical: 16,
+  },
+  fileSelectedContainer: {
+    alignItems: 'center',
   },
 });

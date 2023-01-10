@@ -306,6 +306,8 @@ PODS:
     - React-Core
   - react-native-document-picker (8.1.3):
     - React-Core
+  - react-native-pager-view (6.1.2):
+    - React-Core
   - react-native-slider (4.4.0):
     - React-Core
   - React-perflogger (0.70.6)
@@ -430,6 +432,7 @@ DEPENDENCIES:
   - React-logger (from `../node_modules/react-native/ReactCommon/logger`)
   - react-native-audio-processor (from `../..`)
   - react-native-document-picker (from `../node_modules/react-native-document-picker`)
+  - react-native-pager-view (from `../node_modules/react-native-pager-view`)
   - "react-native-slider (from `../node_modules/@react-native-community/slider`)"
   - React-perflogger (from `../node_modules/react-native/ReactCommon/reactperflogger`)
   - React-RCTActionSheet (from `../node_modules/react-native/Libraries/ActionSheetIOS`)
@@ -511,6 +514,8 @@ EXTERNAL SOURCES:
     :path: "../.."
   react-native-document-picker:
     :path: "../node_modules/react-native-document-picker"
+  react-native-pager-view:
+    :path: "../node_modules/react-native-pager-view"
   react-native-slider:
     :path: "../node_modules/@react-native-community/slider"
   React-perflogger:
@@ -579,6 +584,7 @@ SPEC CHECKSUMS:
   React-logger: 1623c216abaa88974afce404dc8f479406bbc3a0
   react-native-audio-processor: 653e08d66bcdcc4aeb995465d76b6308486f4cb3
   react-native-document-picker: 958e2bc82e128be69055be261aeac8d872c8d34c
+  react-native-pager-view: 54bed894cecebe28cede54c01038d9d1e122de43
   react-native-slider: d2938a12c4e439a227c70eec65d119136eb4aeb5
   React-perflogger: 8c79399b0500a30ee8152d0f9f11beae7fc36595
   React-RCTActionSheet: 7316773acabb374642b926c19aef1c115df5c466

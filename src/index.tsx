@@ -111,72 +111,84 @@ export function processFile(
   options?: ProcessFileOptions
 ): Promise<string> {
   if (
-    options?.reverb !== undefined &&
-    (options.reverb > 100 || options.reverb < 0)
+    options?.reverb?.amount !== undefined &&
+    (options.reverb.amount > 100 || options.reverb.amount < 0)
   ) {
-    throw RangeError('reverb must be between 0 and 100.');
+    throw RangeError('Reverb amount must be between 0 and 100.');
   }
   if (
-    options?.delay !== undefined &&
-    (options.delay > 100 || options.delay < 0)
+    options?.delay?.amount !== undefined &&
+    (options.delay.amount > 100 || options.delay.amount < 0)
   ) {
-    throw RangeError('delay must be between 0 and 100.');
+    throw RangeError('Delay amount must be between 0 and 100.');
   }
   if (
-    options?.delayTimeInMS !== undefined &&
-    (options.delayTimeInMS > 2000 || options.delayTimeInMS < 0)
+    options?.delay?.timeInMS !== undefined &&
+    (options.delay.timeInMS > 2000 || options.delay.timeInMS < 0)
   ) {
-    throw RangeError('delayTimeInMS must be between 0 and 2000.');
+    throw RangeError('timeInMS must be between 0 and 2000.');
   }
   if (
-    options?.delayFeedback !== undefined &&
-    (options.delayFeedback > 100 || options.delayFeedback < -100)
+    options?.delay?.feedbackAmount !== undefined &&
+    (options.delay.feedbackAmount > 100 || options.delay.feedbackAmount < -100)
   ) {
-    throw RangeError('delayFeedback must be between -100 and 100.');
+    throw RangeError('feedbackAmount must be between -100 and 100.');
   }
   if (
-    options?.delayLowPassCutoff !== undefined &&
-    options.delayLowPassCutoff < 10
+    options?.delay?.lowPassCutoff !== undefined &&
+    options.delay.lowPassCutoff < 10
   ) {
-    throw RangeError('delayLowPassCutoff must be larger than 10.');
+    throw RangeError('lowPassCutoff must be larger than 10.');
   }
   if (
-    options?.distortionAmount !== undefined &&
-    (options.distortionAmount > 100 || options.distortionAmount < 0)
+    options?.distortion?.amount !== undefined &&
+    (options.distortion.amount > 100 || options.distortion.amount < 0)
   ) {
-    throw RangeError('distortionAmount must be between -100 and 100.');
+    throw RangeError('Distortion amount must be between -100 and 100.');
   }
   if (
-    options?.distortionGain !== undefined &&
-    (options.distortionGain > 20 || options.distortionGain < -80)
+    options?.distortion?.gain !== undefined &&
+    (options.distortion.gain > 20 || options.distortion.gain < -80)
   ) {
     throw RangeError('distortionGain must be between -80 and 20.');
   }
   if (
-    options?.pitchAmount !== undefined &&
-    (options.pitchAmount > 2400 || options.pitchAmount < -2400)
+    options?.pitch?.amount !== undefined &&
+    (options.pitch.amount > 2400 || options.pitch.amount < -2400)
   ) {
-    throw RangeError('pitchAmount must be between -2400 and 2400.');
+    throw RangeError('Pitch amount must be between -2400 and 2400.');
   }
   if (
-    options?.pitchOverlap !== undefined &&
-    (options.pitchOverlap > 32 || options.pitchOverlap < 3)
+    options?.pitch?.overlapAmount !== undefined &&
+    (options.pitch.overlapAmount > 32 || options?.pitch.overlapAmount < 3)
   ) {
-    throw RangeError('pitchOverlap must be between 3 and 32.');
+    throw RangeError('overlapAmount must be between 3 and 32.');
   }
   if (
-    options?.pitchRate !== undefined &&
-    (options.pitchRate > 32 || options.pitchRate < 1 / 32)
+    options?.pitch?.pitchRate !== undefined &&
+    (options.pitch.pitchRate > 32 || options.pitch.pitchRate < 1 / 32)
   ) {
-    throw RangeError('pitchOverlap must be between 1/32 and 32.');
+    throw RangeError('pitchRate must be between 1/32 and 32.');
   }
   if (
-    options?.playRate !== undefined &&
-    (options.playRate > 4 || options.playRate < 0.25)
+    options?.playRate?.amount !== undefined &&
+    (options.playRate.amount > 4 || options.playRate.amount < 0.25)
   ) {
-    throw RangeError('playRate must be between 0.25 and 4.');
+    throw RangeError('Play rate amount must be between 0.25 and 4.');
   }
-  return AudioProcessor.processFile(filePath, outputFileName, options);
+  return AudioProcessor.processFile(filePath, outputFileName, {
+    reverb: options?.reverb?.amount,
+    delay: options?.delay?.amount,
+    delayTimeInMS: options?.delay?.timeInMS,
+    delayFeedback: options?.delay?.feedbackAmount,
+    delayLowPassCutoff: options?.delay?.lowPassCutoff,
+    distortionAmount: options?.distortion?.amount,
+    distortionGain: options?.distortion?.gain,
+    pitchAmount: options?.pitch?.amount,
+    pitchOverlap: options?.pitch?.overlapAmount,
+    pitchRate: options?.pitch?.pitchRate,
+    playRate: options?.playRate?.amount,
+  });
 }
 
 export default {

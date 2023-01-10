@@ -1,10 +1,18 @@
 import { StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
+  safeArea: {
+    flex: 1,
+  },
   container: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  pageView: {
+    width: '100%',
+    height: '40%',
+    marginBottom: 16,
   },
   audioPickerButton: {
     marginBottom: 16,
@@ -78,10 +86,28 @@ export default StyleSheet.create({
   pauseButton: {
     backgroundColor: '#c55',
   },
+  resetButton: {
+    backgroundColor: '#cc0000',
+    marginBottom: 16,
+  },
   playbackContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     marginBottom: 16,
+  },
+  settingContainer: {
+    height: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#f4f4f4',
+    borderRadius: 24,
+    borderWidth: 1,
+    borderColor: '#777',
+  },
+  settingScrollView: {
+    paddingHorizontal: 16,
+    justifyContent: 'center',
+    paddingVertical: 16,
   },
 });

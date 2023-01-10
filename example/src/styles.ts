@@ -10,6 +10,10 @@ export default StyleSheet.create({
     height: '100%',
     justifyContent: 'center',
   },
+  loadingContainer: {
+    height: '100%',
+    justifyContent: 'center',
+  },
   audioPickerButton: {
     marginBottom: 16,
     alignSelf: 'center',
